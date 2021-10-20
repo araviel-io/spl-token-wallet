@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { useWallet, useWalletSelector } from '../utils/wallet';
-import { PublicKey } from '@solana/web3.js';
+import { PublicKey } from '@safecoin/web3.js';
 import {
   Divider,
   FormControlLabel,

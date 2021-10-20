@@ -10,7 +10,7 @@ import {
   useWallet,
   useWalletTokenAccounts,
 } from '../utils/wallet';
-import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+import { LAMPORTS_PER_SAFE, PublicKey } from '@safecoin/web3.js';
 import { useUpdateTokenName, usePopularTokens } from '../utils/tokens/names';
 import { useAsyncData } from '../utils/fetch-loop';
 import LoadingIndicator from './LoadingIndicator';
@@ -116,7 +116,7 @@ export default function AddTokenDialog({ open, onClose }) {
         {tokenAccountCost ? (
           <DialogContentText>
             Add a token to your wallet. This will cost{' '}
-            {feeFormat.format(tokenAccountCost / LAMPORTS_PER_SOL)} SOL.
+            {feeFormat.format(tokenAccountCost / LAMPORTS_PER_SAFE)} SOL.
           </DialogContentText>
         ) : (
           <LoadingIndicator />

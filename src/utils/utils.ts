@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Keypair, Connection, PublicKey } from '@solana/web3.js';
+import { Keypair, Connection, PublicKey } from '@safecoin/web3.js';
 import { useMediaQuery } from '@material-ui/core';
 import * as bs58 from 'bs58';
 

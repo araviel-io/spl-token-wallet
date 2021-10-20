@@ -2015,6 +2015,26 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
+"@safecoin/web3.js@^1.29.3":
+  version "1.29.3"
+  resolved "https://registry.yarnpkg.com/@safecoin/web3.js/-/web3.js-1.29.3.tgz#6be1217e03ea530d431fdad69702581d81815ba6"
+  integrity sha512-PRTs9HRGFVlriTyfNtsfr+fN/FjFxGLzNeVbMrIug70v2cwEfQMpAfHkumxQwjsWl8puWPJ9gnP2hk5vgDJ15g==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@solana/buffer-layout" "^3.0.0"
+    bn.js "^5.0.0"
+    borsh "^0.4.0"
+    bs58 "^4.0.1"
+    buffer "6.0.1"
+    cross-fetch "^3.1.4"
+    crypto-hash "^1.2.2"
+    jayson "^3.4.4"
+    js-sha3 "^0.8.0"
+    rpc-websockets "^7.4.2"
+    secp256k1 "^4.0.2"
+    superstruct "^0.14.2"
+    tweetnacl "^1.0.0"
+
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
@@ -2033,6 +2053,13 @@
   integrity sha512-MZPUxrmFubI36XS1DI3qmI0YdN1gks62JtFZvxR67ljjSNCeK6U08Zx4msEWOXuofgqUt6zPHSi1H9fbjR/NRA==
   dependencies:
     "@sinonjs/commons" "^1.7.0"
+
+"@solana/buffer-layout@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@solana/buffer-layout/-/buffer-layout-3.0.0.tgz#b9353caeb9a1589cb77a1b145bcb1a9a93114326"
+  integrity sha512-MVdgAKKL39tEs0l8je0hKaXLQFb7Rdfb0Xg2LjFZd8Lfdazkg6xiS98uAZrEKvaoF3i4M95ei9RydkGIDMeo3w==
+  dependencies:
+    buffer "~6.0.3"
 
 "@solana/spl-token-registry@^0.2.102":
   version "0.2.102"
@@ -2083,26 +2110,6 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
     bn.js "^5.0.0"
-    bs58 "^4.0.1"
-    buffer "6.0.1"
-    buffer-layout "^1.2.0"
-    crypto-hash "^1.2.2"
-    jayson "^3.4.4"
-    js-sha3 "^0.8.0"
-    node-fetch "^2.6.1"
-    rpc-websockets "^7.4.2"
-    secp256k1 "^4.0.2"
-    superstruct "^0.14.2"
-    tweetnacl "^1.0.0"
-
-"@solana/web3.js@^1.17.0":
-  version "1.19.0"
-  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.19.0.tgz#b4f0153844a137d03a23b03e478138c1deada232"
-  integrity sha512-tZ+Bk0sD6xvyHas13eRTl0fOtWGHoKithNjIHHYeUbZWwdxOKdutfv14SuD1eqkBdoiQs3KFJvVUkj3M7zTVDg==
-  dependencies:
-    "@babel/runtime" "^7.12.5"
-    bn.js "^5.0.0"
-    borsh "^0.4.0"
     bs58 "^4.0.1"
     buffer "6.0.1"
     buffer-layout "^1.2.0"
@@ -3865,7 +3872,7 @@ buffer@6.0.1:
     base64-js "^1.3.1"
     ieee754 "^1.2.1"
 
-buffer@6.0.3, buffer@^6.0.1:
+buffer@6.0.3, buffer@^6.0.1, buffer@~6.0.3:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/buffer/-/buffer-6.0.3.tgz#2ace578459cc8fbe2a70aaa8f52ee63b6a74c6c6"
   integrity sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==
@@ -4653,6 +4660,13 @@ cross-fetch@3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.0.6.tgz#3a4040bc8941e653e0e9cf17f29ebcd177d3365c"
   integrity sha512-KBPUbqgFjzWlVcURG+Svp9TlhA5uliYtiNx/0r8nv0pdypeQCRJ9IaSIc3q/x3q8t3F75cHuwxVql1HFGHCNJQ==
+  dependencies:
+    node-fetch "2.6.1"
+
+cross-fetch@^3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.4.tgz#9723f3a3a247bf8b89039f3a380a9244e8fa2f39"
+  integrity sha512-1eAtFWdIubi6T4XPy6ei9iUFoKpUkIF971QLN8lIvvvwueI65+Nw5haMNKUwfJxabqlIIDODJKGrQ66gxC0PbQ==
   dependencies:
     node-fetch "2.6.1"
 

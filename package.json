@@ -12,8 +12,8 @@
     "@project-serum/serum": "^0.13.33",
     "@project-serum/swap-ui": "^0.2.2",
     "@project-serum/token": "^0.0.1-alpha.3",
+    "@safecoin/web3.js": "^1.29.3",
     "@solana/spl-token-registry": "^0.2.102",
-    "@solana/web3.js": "^1.17.0",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.6.0",
@@ -84,11 +84,6 @@
   "prettier": {
     "singleQuote": true,
     "trailingComma": "all"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "git-format-staged -f 'prettier --stdin-filepath \"{}\"' src/*.js"
-    }
   },
   "devDependencies": {
     "@types/react-copy-to-clipboard": "^5.0.1",

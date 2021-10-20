@@ -1,4 +1,4 @@
-import { PublicKey } from '@solana/web3.js';
+import { PublicKey } from '@safecoin/web3.js';
 import { DERIVATION_PATH } from './localStorage';
 const bs58 = require('bs58');
 

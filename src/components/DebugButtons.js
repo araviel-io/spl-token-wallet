@@ -5,7 +5,7 @@ import {
 } from '../utils/wallet';
 import { useUpdateTokenName } from '../utils/tokens/names';
 import { useCallAsync, useSendTransaction } from '../utils/notifications';
-import { Account, LAMPORTS_PER_SOL } from '@solana/web3.js';
+import { Account, LAMPORTS_PER_SAFE } from '@safecoin/web3.js';
 import { abbreviateAddress, sleep } from '../utils/utils';
 import {
   refreshAccountInfo,
@@ -28,7 +28,7 @@ export default function DebugButtons() {
 
   function requestAirdrop() {
     callAsync(
-      wallet.connection.requestAirdrop(wallet.publicKey, LAMPORTS_PER_SOL),
+      wallet.connection.requestAirdrop(wallet.publicKey, LAMPORTS_PER_SAFE),
       {
         onSuccess: async () => {
           await sleep(5000);

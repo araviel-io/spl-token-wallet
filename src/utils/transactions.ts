@@ -1,5 +1,5 @@
 import bs58 from 'bs58';
-import { Connection, Message, StakeInstruction, StakeProgram, SystemInstruction, SystemProgram } from '@solana/web3.js';
+import { Connection, Message, StakeInstruction, StakeProgram, SystemInstruction, SystemProgram } from '@safecoin/web3.js';
 import {
   decodeInstruction,
   Market,
@@ -12,7 +12,7 @@ import {
   NEW_ORDER_V3_OWNER_INDEX,
 } from '@project-serum/serum';
 import { decodeTokenInstruction } from '@project-serum/token';
-import { PublicKey } from '@solana/web3.js';
+import { PublicKey } from '@safecoin/web3.js';
 import { TOKEN_PROGRAM_ID } from './tokens/instructions';
 import { Wallet } from './wallet';
 
@@ -268,7 +268,7 @@ const handleDexInstruction = async (
       };
     }
     market = marketCache[strAddress].market;
-  } catch (e) {
+  } catch (e:any) {
     console.log('Error loading market: ' + e.message);
   }
 

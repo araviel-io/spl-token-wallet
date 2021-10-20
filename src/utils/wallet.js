@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import * as bs58 from 'bs58';
-import { Account, PublicKey } from '@solana/web3.js';
+import { Account, PublicKey } from '@safecoin/web3.js';
 import nacl from 'tweetnacl';
 import {
   setInitialAccountInfo,

@@ -1,5 +1,5 @@
 import { MARKETS } from '@project-serum/serum';
-import { PublicKey } from '@solana/web3.js';
+import { PublicKey } from '@safecoin/web3.js';
 import { MAINNET_URL } from './connection';
 
 interface Markets {

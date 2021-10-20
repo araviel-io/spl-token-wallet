@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import DialogForm from './DialogForm';
 import { useWallet, useWalletAddressForMint } from '../utils/wallet';
-import { PublicKey } from '@solana/web3.js';
+import { PublicKey } from '@safecoin/web3.js';
 import { abbreviateAddress } from '../utils/utils';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { useCallAsync, useSendTransaction } from '../utils/notifications';

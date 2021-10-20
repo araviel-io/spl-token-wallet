@@ -19,7 +19,7 @@ import LoadingIndicator from './LoadingIndicator';
 import SendIcon from '@material-ui/icons/Send';
 import { useUserDomains } from '../utils/name-service';
 import { makeStyles } from '@material-ui/core/styles';
-import { PublicKey, Transaction } from '@solana/web3.js';
+import { PublicKey, Transaction } from '@safecoin/web3.js';
 import DnsIcon from '@material-ui/icons/Dns';
 import Modal from '@material-ui/core/Modal';
 import ExpandLess from '@material-ui/icons/ExpandLess';

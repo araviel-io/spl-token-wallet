@@ -1,7 +1,7 @@
 import { getUnlockedMnemonicAndSeed } from './../wallet-seed';
 import * as bip32 from 'bip32';
 import nacl from 'tweetnacl';
-import { Account } from '@solana/web3.js';
+import { Account } from '@safecoin/web3.js';
 import bs58 from 'bs58';
 import { derivePath } from 'ed25519-hd-key';
 

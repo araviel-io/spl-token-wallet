@@ -8,7 +8,7 @@ import {
 import { useListener } from '../utils';
 import { clusterForEndpoint } from '../clusters';
 import { useCallback } from 'react';
-import { PublicKey } from '@solana/web3.js';
+import { PublicKey } from '@safecoin/web3.js';
 import { TokenListProvider } from '@solana/spl-token-registry';
 
 // This list is used for deciding what to display in the popular tokens list

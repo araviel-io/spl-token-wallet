@@ -4,7 +4,7 @@ import {
   clusterApiUrl,
   Connection,
   PublicKey,
-} from '@solana/web3.js';
+} from '@safecoin/web3.js';
 import tuple from 'immutable-tuple';
 import * as anchor from '@project-serum/anchor';
 import { useLocalStorageState, useRefEqual } from './utils';
@@ -125,11 +125,11 @@ export function setInitialAccountInfo(connection, publicKey, accountInfo) {
   setCache(cacheKey, accountInfo, { initializeOnly: true });
 }
 
-export async function getMultipleSolanaAccounts(
+/*export async function getMultipleSolanaAccounts(
   connection: Connection,
   publicKeys: PublicKey[],
 ): Promise<
   Array<null | { publicKey: PublicKey; account: AccountInfo<Buffer> }>
 > {
 	return anchor.utils.rpc.getMultipleAccounts(connection, publicKeys);
-}
+}*/
