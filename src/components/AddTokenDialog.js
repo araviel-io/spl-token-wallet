@@ -167,7 +167,7 @@ export default function AddTokenDialog({ open, onClose }) {
           </React.Fragment>
         ) : tab === 'popular' ? (
           <List disablePadding>
-            {popularTokens.filter(tokenInfo => tokenInfo.address).map((tokenInfo) => (
+            {/*popularTokens.filter(tokenInfo => tokenInfo.address).map((tokenInfo) => (
               <TokenListItem
                 key={tokenInfo.address}
                 tokenInfo={tokenInfo}
@@ -178,19 +178,20 @@ export default function AddTokenDialog({ open, onClose }) {
                 onSubmit={onSubmit}
                 disabled={sending}
               />
-            ))}
+                ))*/}
           </List>
         ) : tab === 'erc20' ? (
           <>
             <TextField
-              label="ERC20 Contract Address"
+              label="ERC20 Contract Address (soon !)"
               fullWidth
               variant="outlined"
               margin="normal"
               value={erc20Address}
               onChange={(e) => setErc20Address(e.target.value.trim())}
               autoFocus
-              disabled={sending}
+              disabled={true}
+              placeholder="soon !"
             />
             {erc20Address && valid ? (
               <Link
