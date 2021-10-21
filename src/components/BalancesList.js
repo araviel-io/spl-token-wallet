@@ -47,9 +47,9 @@ import {
 } from '../utils/connection';
 import { useRegion } from '../utils/region';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { serumMarkets, priceStore } from '../utils/markets';
-import { swapApiRequest } from '../utils/swap/api';
-import { showSwapAddress } from '../utils/config';
+//import { serumMarkets, priceStore } from '../utils/markets';
+//import { swapApiRequest } from '../utils/swap/api';
+//import { showSwapAddress } from '../utils/config';
 import { useAsyncData } from '../utils/fetch-loop';
 import { showTokenInfoDialog } from '../utils/config';
 import { useConnection } from '../utils/connection';
@@ -110,8 +110,8 @@ export default function BalancesList() {
   const [showEditAccountNameDialog, setShowEditAccountNameDialog] = useState(
     false,
   );
-  const [showMergeAccounts, setShowMergeAccounts] = useState(false);
-  const [showFtxPayDialog, setShowFtxPayDialog] = useState(false);
+  //const [showMergeAccounts, setShowMergeAccounts] = useState(false);
+ // const [showFtxPayDialog, setShowFtxPayDialog] = useState(false);
   const [sortAccounts, setSortAccounts] = useState(SortAccounts.None);
   const [showDomains, setShowDomains] = useState(false);
   const { accounts, setAccountName } = useWalletSelector();
@@ -252,7 +252,7 @@ export default function BalancesList() {
                 </IconButton>
               </Tooltip>
             )}
-          <Tooltip title="Deposit via FTX Pay" arrow>
+          {/*<Tooltip title="Deposit via FTX Pay" arrow>
             <IconButton
               size={iconSize}
               onClick={() => setShowFtxPayDialog(true)}
@@ -267,22 +267,26 @@ export default function BalancesList() {
                 src={ftxPayIcon}
               />
             </IconButton>
-          </Tooltip>
+          </Tooltip>*/}
+          {/*
           <Tooltip title="See your domains" arrow>
             <IconButton size={iconSize} onClick={() => setShowDomains(true)}>
               <DnsIcon />
             </IconButton>
           </Tooltip>
+          */}
+          {/*
           <DomainsList open={showDomains} setOpen={setShowDomains} />
           {region.result && !region.result.isRestricted && <SwapButton size={iconSize} />}
           <Tooltip title="Migrate Tokens" arrow>
             <IconButton
               size={iconSize}
-              onClick={() => setShowMergeAccounts(true)}
+              onClick={() => setShowMergeAccounts(false)}
             >
               <MergeType />
             </IconButton>
           </Tooltip>
+          */}
           <Tooltip title="Add Token" arrow>
             <IconButton
               size={iconSize}
@@ -339,11 +343,11 @@ export default function BalancesList() {
         open={showAddTokenDialog}
         onClose={() => setShowAddTokenDialog(false)}
       />
-      <FtxPayDialog
+      {/*<FtxPayDialog
         open={showFtxPayDialog}
         publicKeys={publicKeys}
         onClose={() => setShowFtxPayDialog(false)}
-      />
+      />*/}
       <EditAccountNameDialog
         open={showEditAccountNameDialog}
         onClose={() => setShowEditAccountNameDialog(false)}
@@ -353,10 +357,11 @@ export default function BalancesList() {
           setShowEditAccountNameDialog(false);
         }}
       />
+      {/*
       <MergeAccountsDialog
         open={showMergeAccounts}
         onClose={() => setShowMergeAccounts(false)}
-      />
+      />*/}
     </Paper>
   );
 }
@@ -406,7 +411,7 @@ export function BalanceListItem({ publicKey, expandable, setUsdValue }) {
           setPrice(1);
         }
         // A Serum market exists. Fetch the price.
-        else if (serumMarkets[coin]) {
+        /*else if (serumMarkets[coin]) {
           let m = serumMarkets[coin];
           priceStore
             .getPrice(connection, m.name)
@@ -417,7 +422,7 @@ export function BalanceListItem({ publicKey, expandable, setUsdValue }) {
               console.error(err);
               setPrice(null);
             });
-        }
+        }*/
         // No Serum market exists.
         else {
           setPrice(null);
@@ -561,7 +566,7 @@ export function BalanceListItem({ publicKey, expandable, setUsdValue }) {
           <BalanceListItemDetails
             isAssociatedToken={isAssociatedToken}
             publicKey={publicKey}
-            serumMarkets={serumMarkets}
+           // serumMarkets={serumMarkets}
             balanceInfo={balanceInfo}
           />
         </Collapse>
@@ -589,7 +594,7 @@ function BalanceListItemDetails({
   const [showDetails, setShowDetails] = useState(false);
   const wallet = useWallet();
   const isProdNetwork = useIsProdNetwork();
-  const [swapInfo] = useAsyncData(async () => {
+  /*const [swapInfo] = useAsyncData(async () => {
     if (!showSwapAddress || !isProdNetwork) {
       return null;
     }
@@ -597,7 +602,7 @@ function BalanceListItemDetails({
       'POST',
       'swap_to',
       {
-        blockchain: 'sol',
+        blockchain: 'safe',
         coin: balanceInfo.mint?.toBase58(),
         address: publicKey.toBase58(),
       },
@@ -608,7 +613,7 @@ function BalanceListItemDetails({
     isProdNetwork,
     balanceInfo.mint?.toBase58(),
     publicKey.toBase58(),
-  ]);
+  ]);*/
   const isExtensionWidth = useIsExtensionWidth();
 
   if (!balanceInfo) {
@@ -618,14 +623,14 @@ function BalanceListItemDetails({
   let { mint, tokenName, tokenSymbol, owner, amount } = balanceInfo;
 
   // Only show the export UI for the native SOL coin.
-  const exportNeedsDisplay =
-    mint === null && tokenName === 'SOL' && tokenSymbol === 'SOL';
+  /*const exportNeedsDisplay =
+    mint === null && tokenName === 'SAFE' && tokenSymbol === 'SAFE';*/
 
-  const market = tokenSymbol
+  /*const market = tokenSymbol
     ? serumMarkets[tokenSymbol.toUpperCase()]
       ? serumMarkets[tokenSymbol.toUpperCase()].publicKey
       : undefined
-    : undefined;
+    : undefined;*/
   const isSolAddress = publicKey.equals(owner);
   const additionalInfo = isExtensionWidth ? undefined : (
     <>
@@ -645,15 +650,15 @@ function BalanceListItemDetails({
           <Typography variant="body2">
             <Link
               href={
-                `https://solscan.io/account/${publicKey.toBase58()}` + urlSuffix
+                `https://explorer.safecoins.org/account/${publicKey.toBase58()}` + urlSuffix
               }
               target="_blank"
               rel="noopener"
             >
-              View on Solscan
+              View on Explorer
             </Link>
           </Typography>
-          {market && (
+          {/*market && (
             <Typography variant="body2">
               <Link
                 href={`https://dex.projectserum.com/#/market/${market}`}
@@ -663,8 +668,8 @@ function BalanceListItemDetails({
                 View on Serum
               </Link>
             </Typography>
-          )}
-          {swapInfo && swapInfo.coin.erc20Contract && (
+          )*/}
+          {/*swapInfo && swapInfo.coin.erc20Contract && (
             <Typography variant="body2">
               <Link
                 href={
@@ -677,7 +682,7 @@ function BalanceListItemDetails({
                 View on Ethereum
               </Link>
             </Typography>
-          )}
+              )*/}
           {!isSolAddress && (
             <Typography variant="body2">
               <Link
@@ -701,7 +706,7 @@ function BalanceListItemDetails({
             </Typography>
           )}
         </div>
-        {exportNeedsDisplay && wallet.allowsExport && (
+        {/*exportNeedsDisplay && wallet.allowsExport && (
           <div>
             <Typography variant="body2">
               <Link href={'#'} onClick={(e) => setExportAccDialogOpen(true)}>
@@ -709,7 +714,7 @@ function BalanceListItemDetails({
               </Link>
             </Typography>
           </div>
-        )}
+        )*/}
       </div>
     </>
   );
@@ -777,7 +782,7 @@ function BalanceListItemDetails({
         onClose={() => setDepositDialogOpen(false)}
         balanceInfo={balanceInfo}
         publicKey={publicKey}
-        swapInfo={swapInfo}
+        //swapInfo={swapInfo}
         isAssociatedToken={isAssociatedToken}
       />
       <TokenInfoDialog
