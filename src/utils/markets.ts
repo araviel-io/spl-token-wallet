@@ -10,7 +10,7 @@ interface Markets {
   };
 }
 
-export const serumMarkets = (() => {
+/*export const serumMarkets = (() => {
   const m: Markets = {};
   MARKETS.forEach((market) => {
     const coin = market.name.split('/')[0];
@@ -30,7 +30,7 @@ export const serumMarkets = (() => {
     }
   });
   return m;
-})();
+})();*/
 
 // Create a cached API wrapper to avoid rate limits.
 class PriceStore {

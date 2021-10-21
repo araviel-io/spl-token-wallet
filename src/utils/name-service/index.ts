@@ -1,12 +1,12 @@
 import { PublicKey, Connection } from '@safecoin/web3.js';
-import {
+/*import {
   getTwitterRegistry,
   getHashedName,
   getNameAccountKey,
   NameRegistryState,
   getFilteredProgramAccounts,
   NAME_PROGRAM_ID,
-} from '@bonfida/spl-name-service';
+} from '@bonfida/spl-name-service';*/
 import { useConnection } from '../connection';
 import { useWallet } from '../wallet';
 import BN from 'bn.js';
@@ -22,7 +22,7 @@ export const PROGRAM_ID = new PublicKey(
   'jCebN34bUfdeUYJT13J1yG16XWQpt5PDx6Mse9GUqhR',
 );
 
-export const resolveTwitterHandle = async (
+/*export const resolveTwitterHandle = async (
   connection: Connection,
   twitterHandle: string,
 ): Promise<string | undefined> => {
@@ -33,9 +33,9 @@ export const resolveTwitterHandle = async (
     console.warn(`err`);
     return undefined;
   }
-};
+};*/
 
-export const resolveDomainName = async (
+/*export const resolveDomainName = async (
   connection: Connection,
   domainName: string,
 ): Promise<string | undefined> => {
@@ -55,8 +55,9 @@ export const resolveDomainName = async (
     console.warn(err);
     return undefined;
   }
-};
+};*/
 
+/*
 export async function findOwnedNameAccountsForUser(
   connection: Connection,
   userAccount: PublicKey,
@@ -75,8 +76,9 @@ export async function findOwnedNameAccountsForUser(
     filters,
   );
   return accounts.map((a) => a.publicKey);
-}
+}*/
 
+/*
 export async function performReverseLookup(
   connection: Connection,
   nameAccount: PublicKey,
@@ -98,7 +100,8 @@ export async function performReverseLookup(
   let nameLength = new BN(name.data.slice(0, 4), 'le').toNumber();
   return name.data.slice(4, 4 + nameLength).toString();
 }
-
+*/
+/*
 export const useUserDomains = () => {
   const wallet = useWallet();
   const connection = useConnection();
@@ -127,3 +130,4 @@ export const useUserDomains = () => {
     tuple('useUserDomain', wallet?.publicKey?.toBase58()),
   );
 };
+*/

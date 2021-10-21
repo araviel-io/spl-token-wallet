@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core';
 import LoadingIndicator from './LoadingIndicator';
 import SendIcon from '@material-ui/icons/Send';
-import { useUserDomains } from '../utils/name-service';
+//import { useUserDomains } from '../utils/name-service';
 import { makeStyles } from '@material-ui/core/styles';
 import { PublicKey, Transaction } from '@safecoin/web3.js';
 import DnsIcon from '@material-ui/icons/Dns';
@@ -104,7 +104,7 @@ const TransferDialog = ({
     setNewOwner(e.target.value.trim());
   };
   const canSumbit = newOwner && checked;
-  const onClick = async () => {
+  const onClick = async () => {/*
     if (!newOwner) {
       return enqueueSnackbar('Invalid input', { variant: 'error' });
     }
@@ -140,7 +140,7 @@ const TransferDialog = ({
       refreshCache(tuple('useUserDomain', wallet?.publicKey?.toBase58()));
       setLoading(false);
     }
-  };
+  */};
   return (
     <Modal
       style={{
@@ -193,7 +193,7 @@ const TransferDialog = ({
             color="primary"
             style={{ padding: 10 }}
           >
-            {loading ? <LoadingIndicator height="10px" /> : 'Transfer'}
+            {loading ? <LoadingIndicator  /> : 'Transfer'}
           </Button>
         </div>
       </Paper>
@@ -267,6 +267,7 @@ const DomainListItem = ({
   );
 };
 
+/*
 const DomainsList = () => {
   const [userDomains, userDomainsLoaded] = useUserDomains();
   if (!userDomainsLoaded) {
@@ -295,7 +296,7 @@ const DomainsList = () => {
     </>
   );
 };
-
+*/
 const DomainDialog = ({
   open,
   setOpen,
@@ -314,7 +315,7 @@ const DomainDialog = ({
             </Typography>
           </Toolbar>
         </AppBar>
-        <DomainsList />
+        {/*<DomainsList />*/}
       </Paper>
     </Modal>
   );

@@ -36,7 +36,7 @@ import {
 import { parseTokenAccountData } from '../utils/tokens/data';
 import { Switch, Tooltip } from '@material-ui/core';
 import { EthFeeEstimate } from './EthFeeEstimate';
-import { resolveDomainName, resolveTwitterHandle } from '../utils/name-service';
+//import { resolveDomainName, resolveTwitterHandle } from '../utils/name-service';
 
 const WUSDC_MINT = new PublicKey(
   'BXXkv6z8ykpG1yuvUDPgh732wzVHB69RnB9YgSYh3itW',
@@ -232,7 +232,7 @@ function SendSplDialog({ onClose, publicKey, balanceInfo, onSubmitRef }) {
 
   useEffect(() => {
     (async () => {
-      if (destinationAddress.startsWith('@')) {
+      /*if (destinationAddress.startsWith('@')) {
         const twitterOwner = await resolveTwitterHandle(
           wallet.connection,
           destinationAddress.slice(1),
@@ -245,8 +245,8 @@ function SendSplDialog({ onClose, publicKey, balanceInfo, onSubmitRef }) {
         }
         setIsDomainName(true);
         setDomainOwner(twitterOwner);
-      }
-      if (destinationAddress.endsWith('.sol')) {
+      }*/
+      /*if (destinationAddress.endsWith('.sol')) {
         const domainOwner = await resolveDomainName(
           wallet.connection,
           destinationAddress.slice(0, -4),
@@ -259,7 +259,7 @@ function SendSplDialog({ onClose, publicKey, balanceInfo, onSubmitRef }) {
         }
         setIsDomainName(true);
         setDomainOwner(domainOwner);
-      }
+      }*/
       if (!destinationAddress) {
         setAddressHelperText(defaultAddressHelperText);
         setPassValidation(undefined);
