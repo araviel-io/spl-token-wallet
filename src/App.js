@@ -84,7 +84,7 @@ export default function App() {
 function PageContents() {
   const wallet = useWallet();
   const [page] = usePage();
-  const [showWalletSuggestion, setShowWalletSuggestion] = useState(true);
+  const [showWalletSuggestion, setShowWalletSuggestion] = useState(false);
   const suggestionKey = 'private-irgnore-wallet-suggestion';
   const ignoreSuggestion = window.localStorage.getItem(suggestionKey);
   if (!wallet) {
