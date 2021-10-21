@@ -69,7 +69,7 @@ export default function FtxPayDialog({ open, onClose }) {
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Send funds to your Sollet wallet from an FTX account, where you can add funds using crypto on multiple blockchains, credit cards, and more.
+          Send funds to your Safelet wallet from an FTX account, where you can add funds using crypto on multiple blockchains, credit cards, and more.
         </DialogContentText>
         <DialogContentText>
           If you don't have an FTX account, it may take a few moments to get up.
@@ -77,16 +77,16 @@ export default function FtxPayDialog({ open, onClose }) {
         <div className={classes.container}>
           <FormControl variant="outlined" className={classes.selector}>
             <Select value={coin} onChange={(e) => setCoin(e.target.value)}>
-              <MenuItem value={'SOL'}>
+              <MenuItem value={'SAFE'}>
                 <div className={classes.menuItem}>
                   <TokenIcon
                     url={null}
                     mint={null}
-                    tokenName={'SOL'}
+                    tokenName={'SAFE'}
                     size={30}
                     className={classes.tokenIcon}
                   />
-                  <div>{isExtensionWidth ? 'SOL' : 'Solana SOL'}</div>
+                  <div>{isExtensionWidth ? 'SAFE' : 'Safecoin SAFE'}</div>
                 </div>
               </MenuItem>
               {popularTokens
@@ -104,7 +104,7 @@ export default function FtxPayDialog({ open, onClose }) {
                         target="_blank"
                         rel="noopener"
                         href={
-                          `https://solscan.io/account/${tokenInfo.address}` +
+                          `https://explorer.safecoin.org/account/${tokenInfo.address}` +
                           urlSuffix
                         }
                       >

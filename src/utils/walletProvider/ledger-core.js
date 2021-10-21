@@ -74,7 +74,7 @@ export function solana_derivation_path(account, change, derivationPath) {
     let offset = 0;
     offset = derivation_path.writeUInt8(length, offset);
     offset = derivation_path.writeUInt32BE(_harden(44), offset); // Using BIP44
-    derivation_path.writeUInt32BE(_harden(501), offset); // Solana's BIP44 path
+    derivation_path.writeUInt32BE(_harden(19165), offset); // Solana's BIP44 path
     return derivation_path;
   } else if (derivationPath === DERIVATION_PATH.bip44) {
     const length = 3;
@@ -82,7 +82,7 @@ export function solana_derivation_path(account, change, derivationPath) {
     let offset = 0;
     offset = derivation_path.writeUInt8(length, offset);
     offset = derivation_path.writeUInt32BE(_harden(44), offset); // Using BIP44
-    offset = derivation_path.writeUInt32BE(_harden(501), offset); // Solana's BIP44 path
+    offset = derivation_path.writeUInt32BE(_harden(19165), offset); // Solana's BIP44 path
     derivation_path.writeUInt32BE(_harden(useAccount), offset);
     return derivation_path;
   } else if (derivationPath === DERIVATION_PATH.bip44Change) {
@@ -91,7 +91,7 @@ export function solana_derivation_path(account, change, derivationPath) {
     let offset = 0;
     offset = derivation_path.writeUInt8(length, offset);
     offset = derivation_path.writeUInt32BE(_harden(44), offset); // Using BIP44
-    offset = derivation_path.writeUInt32BE(_harden(501), offset); // Solana's BIP44 path
+    offset = derivation_path.writeUInt32BE(_harden(19165), offset); // Solana's BIP44 path
     offset = derivation_path.writeUInt32BE(_harden(useAccount), offset);
     derivation_path.writeUInt32BE(_harden(useChange), offset);
     return derivation_path;

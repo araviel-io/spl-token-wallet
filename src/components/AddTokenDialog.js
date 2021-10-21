@@ -116,7 +116,7 @@ export default function AddTokenDialog({ open, onClose }) {
         {tokenAccountCost ? (
           <DialogContentText>
             Add a token to your wallet. This will cost{' '}
-            {feeFormat.format(tokenAccountCost / LAMPORTS_PER_SAFE)} SOL.
+            {feeFormat.format(tokenAccountCost / LAMPORTS_PER_SAFE)} SAFE.
           </DialogContentText>
         ) : (
           <LoadingIndicator />
@@ -243,7 +243,7 @@ function TokenListItem({ tokenInfo, onSubmit, disabled, existingAccount }) {
                 target="_blank"
                 rel="noopener"
                 href={
-                  `https://solscan.io/account/${tokenInfo.address}` +
+                  `https://explorer.safecoins.org/account/${tokenInfo.address}` +
                   urlSuffix
                 }
               >

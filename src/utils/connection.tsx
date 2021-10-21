@@ -6,7 +6,7 @@ import {
   PublicKey,
 } from '@safecoin/web3.js';
 import tuple from 'immutable-tuple';
-import * as anchor from '@project-serum/anchor';
+//import * as anchor from '@project-serum/anchor';
 import { useLocalStorageState, useRefEqual } from './utils';
 import { refreshCache, setCache, useAsyncData } from './fetch-loop';
 
@@ -16,10 +16,10 @@ const ConnectionContext = React.createContext<{
   connection: Connection;
 } | null>(null);
 
-export const MAINNET_URL = 'https://solana-api.projectserum.com';
+export const MAINNET_URL = 'https://api.mainnet-beta.safecoin.org/';
 // No backup url for now. Leave the variable to not break wallets that
 // have saved the url in their local storage, previously.
-export const MAINNET_BACKUP_URL = 'https://solana-api.projectserum.com/';
+export const MAINNET_BACKUP_URL = 'https://api.mainnet-beta.safecoin.org/';
 export function ConnectionProvider({ children }) {
   const [endpoint, setEndpoint] = useLocalStorageState(
     'connectionEndpoint',

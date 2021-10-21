@@ -68,8 +68,8 @@ export default function DebugButtons() {
       <Tooltip
         title={
           requestAirdropDisabled
-            ? 'Receive some devnet SOL for free. Only enabled on the devnet'
-            : 'Receive some devnet SOL for free'
+            ? 'Receive some devnet SAFE for free. Only enabled on the devnet'
+            : 'Receive some devnet SAFE for free'
         }
       >
         <span>

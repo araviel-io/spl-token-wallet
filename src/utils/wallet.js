@@ -456,8 +456,8 @@ export function useBalanceInfo(publicKey) {
       decimals: 9,
       mint: null,
       owner: publicKey,
-      tokenName: 'SOL',
-      tokenSymbol: 'SOL',
+      tokenName: 'SAFE',
+      tokenSymbol: 'SAFE',
       valid: true,
     };
   }

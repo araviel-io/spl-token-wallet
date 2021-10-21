@@ -55,7 +55,7 @@ export default function DepositDialog({
     let firstTab = `SPL ${tokenSymbol ?? swapInfo.coin.ticker}`;
     let secondTab = swapInfo.coin.ticker;
     if (!mint) {
-      firstTab = 'SOL';
+      firstTab = 'SAFE';
     } else {
       secondTab = `${
         swapInfo.coin.erc20Contract ? 'ERC20' : 'Native'
@@ -119,13 +119,13 @@ export default function DepositDialog({
             <DialogContentText variant="body2">
               <Link
                 href={
-                  `https://solscan.io/account/${depositAddressStr}` +
+                  `https://explorer.safecoins.org/account/${depositAddressStr}` +
                   urlSuffix
                 }
                 target="_blank"
                 rel="noopener"
               >
-                View on Solscan
+                View on explorer
               </Link>
             </DialogContentText>
           </>
