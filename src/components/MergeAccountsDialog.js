@@ -15,7 +15,7 @@ import { useWalletPublicKeys } from '../utils/wallet';
 import {
   useConnection,
   refreshAccountInfo,
-  getMultipleSolanaAccounts,
+  /*getMultipleSolanaAccounts,*/
 } from '../utils/connection';
 import { parseTokenAccountData } from '../utils/tokens/data';
 import { refreshWalletPublicKeys, useWallet } from '../utils/wallet';
@@ -55,7 +55,7 @@ export default function MergeAccountsDialog({ open, onClose }) {
       // Fetch all token accounts owned by the wallet. An account is null
       // if we previously sent the close transaction, but did not receive
       // a response due to RPC node instability.
-      const tokenAccounts = (
+      /*const tokenAccounts = (
         await getMultipleSolanaAccounts(connection, publicKeys)
       )
         .filter(
@@ -70,7 +70,8 @@ export default function MergeAccountsDialog({ open, onClose }) {
             owner: account.owner,
           };
         });
-
+*/
+      const tokenAccounts = null;
       // Group the token accounts by mint.
       const groupedTokenAccounts = {};
       tokenAccounts.forEach((ta) => {
@@ -209,7 +210,7 @@ export default function MergeAccountsDialog({ open, onClose }) {
             </Button>
             <Button
               disabled={disabled}
-              onClick={() => {
+              onClick={() => {/*
                 setIsMerging(true);
                 mergeAccounts()
                   .then(() => {
@@ -225,7 +226,7 @@ export default function MergeAccountsDialog({ open, onClose }) {
                     );
                     setIsMerging(false);
                   });
-              }}
+                */}}
               color="secondary"
               autoFocus
             >
