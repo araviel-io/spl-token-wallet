@@ -655,7 +655,8 @@ function useForm(
 
   const parsedAmount = parseFloat(transferAmountString) * 10 ** decimals;
   const validAmount = parsedAmount > 0 && parsedAmount <= balanceAmount;
-
+  console.log("parsedAmount : ", parsedAmount);
+  console.log("validAmount : ", parsedAmount)
   const fields = (
     <>
       <TextField
@@ -685,7 +686,7 @@ function useForm(
               <Button
                 onClick={() =>
                   setTransferAmountString(
-                    balanceAmountToUserAmount(balanceAmount, decimals),
+                    balanceAmountToUserAmount((balanceAmount - 100000), decimals),
                   )
                 }
               >
