@@ -56,6 +56,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  appbar: {
+    backgroundColor: '#00698d',
+  },
   button: {
     marginLeft: theme.spacing(1),
   },
@@ -93,7 +96,7 @@ export default function NavigationFrame({ children }) {
             </Typography>
           </div>
         )}
-        <Toolbar>
+        <Toolbar className={classes.appbar}>
           <Typography variant="h6" className={classes.title} component="h1">
             {isExtensionWidth ? 'Safelet' : 'Safecoin SPL Token Wallet'}
           </Typography>

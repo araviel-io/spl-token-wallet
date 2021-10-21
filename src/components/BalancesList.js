@@ -113,13 +113,13 @@ export default function BalancesList() {
   //const [showMergeAccounts, setShowMergeAccounts] = useState(false);
  // const [showFtxPayDialog, setShowFtxPayDialog] = useState(false);
   const [sortAccounts, setSortAccounts] = useState(SortAccounts.None);
-  const [showDomains, setShowDomains] = useState(false);
+  //const [showDomains, setShowDomains] = useState(false);
   const { accounts, setAccountName } = useWalletSelector();
   const [isCopied, setIsCopied] = useState(false);
   const isExtensionWidth = useIsExtensionWidth();
   // Dummy var to force rerenders on demand.
   const [, setForceUpdate] = useState(false);
-  const region = useRegion();
+  //const region = useRegion();
   const selectedAccount = accounts.find((a) => a.isSelected);
   const allTokensLoaded = loaded && fairsIsLoaded(publicKeys);
   let sortedPublicKeys = publicKeys;
@@ -234,9 +234,9 @@ export default function BalancesList() {
                       selectedAccount &&
                       shortenAddress(selectedAccount.address.toBase58())
                     })`}{' '}
-                {allTokensLoaded && (
+                {/*allTokensLoaded && (
                   <>({numberFormat.format(totalUsdValue.toFixed(2))})</>
-                )}
+                )*/}
               </Typography>
             </Tooltip>
           </CopyToClipboard>
