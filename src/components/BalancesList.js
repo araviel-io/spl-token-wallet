@@ -27,6 +27,7 @@ import ReceiveIcon from '@material-ui/icons/WorkOutline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import AddIcon from '@material-ui/icons/Add';
+import CompareIcon from '@material-ui/icons/Compare';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
@@ -106,12 +107,13 @@ function fairsIsLoaded(publicKeys) {
 export default function BalancesList() {
   const wallet = useWallet();
   const [publicKeys, loaded] = useWalletPublicKeys();
+  const [showWrapUnwrapdialog, setShowWrapUnwrapDialog] = useState(false);
   const [showAddTokenDialog, setShowAddTokenDialog] = useState(false);
   const [showEditAccountNameDialog, setShowEditAccountNameDialog] = useState(
     false,
   );
   //const [showMergeAccounts, setShowMergeAccounts] = useState(false);
- // const [showFtxPayDialog, setShowFtxPayDialog] = useState(false);
+  // const [showFtxPayDialog, setShowFtxPayDialog] = useState(false);
   const [sortAccounts, setSortAccounts] = useState(SortAccounts.None);
   //const [showDomains, setShowDomains] = useState(false);
   const { accounts, setAccountName } = useWalletSelector();
@@ -230,10 +232,9 @@ export default function BalancesList() {
                 {selectedAccount && selectedAccount.name}
                 {isExtensionWidth
                   ? ''
-                  : ` (${
-                      selectedAccount &&
-                      shortenAddress(selectedAccount.address.toBase58())
-                    })`}{' '}
+                  : ` (${selectedAccount &&
+                  shortenAddress(selectedAccount.address.toBase58())
+                  })`}{' '}
                 {/*allTokensLoaded && (
                   <>({numberFormat.format(totalUsdValue.toFixed(2))})</>
                 )*/}
@@ -287,6 +288,14 @@ export default function BalancesList() {
             </IconButton>
           </Tooltip>
           */}
+          <Tooltip title="Wrap/Unwrap" arrow>
+            <IconButton
+              size={iconSize}
+              onClick={() => setShowAddTokenDialog(true)}
+            >
+              <CompareIcon />
+            </IconButton>
+          </Tooltip>
           <Tooltip title="Add Token" arrow>
             <IconButton
               size={iconSize}
@@ -462,7 +471,7 @@ export function BalanceListItem({ publicKey, expandable, setUsdValue }) {
     if (
       associatedTokensCache[wallet.publicKey.toString()] === undefined ||
       associatedTokensCache[wallet.publicKey.toString()][mint.toString()] ===
-        undefined
+      undefined
     ) {
       findAssociatedTokenAddress(wallet.publicKey, mint).then((assocTok) => {
         let walletAccounts = Object.assign(
@@ -517,8 +526,8 @@ export function BalanceListItem({ publicKey, expandable, setUsdValue }) {
     price === undefined // Not yet loaded.
       ? undefined
       : price === null // Loaded and empty.
-      ? null
-      : ((amount / Math.pow(10, decimals)) * price).toFixed(2); // Loaded.
+        ? null
+        : ((amount / Math.pow(10, decimals)) * price).toFixed(2); // Loaded.
   if (setUsdValue && usdValue !== undefined) {
     setUsdValue(publicKey, usdValue === null ? null : parseFloat(usdValue));
   }
@@ -566,7 +575,7 @@ export function BalanceListItem({ publicKey, expandable, setUsdValue }) {
           <BalanceListItemDetails
             isAssociatedToken={isAssociatedToken}
             publicKey={publicKey}
-           // serumMarkets={serumMarkets}
+            // serumMarkets={serumMarkets}
             balanceInfo={balanceInfo}
           />
         </Collapse>
@@ -756,8 +765,8 @@ function BalanceListItemDetails({
             Send
           </Button>
           {localStorage.getItem('warning-close-account') &&
-          mint &&
-          amount === 0 ? (
+            mint &&
+            amount === 0 ? (
             <Button
               variant="outlined"
               color="secondary"
