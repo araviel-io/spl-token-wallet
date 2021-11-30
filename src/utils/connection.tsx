@@ -17,7 +17,6 @@ const ConnectionContext = React.createContext<{
 } | null>(null);
 
 export const MAINNET_URL = 'https://api.mainnet-beta.safecoin.org/';
-export const DEVNET_URL = 'https://api.devnet.safecoin.org/';
 // No backup url for now. Leave the variable to not break wallets that
 // have saved the url in their local storage, previously.
 export const MAINNET_BACKUP_URL = 'https://api.mainnet-beta.safecoin.org/';

@@ -206,7 +206,6 @@ export default function SendDialog({ open, onClose, publicKey, balanceInfo }) {
 
 function SendSplDialog({ onClose, publicKey, balanceInfo, onSubmitRef }) {
   const defaultAddressHelperText =
-    // check if is wrapped or not
     !balanceInfo.mint || balanceInfo.mint.equals(WRAPPED_SOL_MINT)
       ? 'Enter Safecoin Address'
       : 'Enter SPL token or Safecoin address';
