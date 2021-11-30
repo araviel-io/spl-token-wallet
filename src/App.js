@@ -140,7 +140,7 @@ function WalletSuggestionDialog({ open, onClose, onIgnore }) {
             {' '}
             open source
           </a>{' '}
-          wallet for advanced users and developers. For the best Solana
+          wallet for advanced users and developers. For the best SafeCoin
           experience and user support, it is recommended to use <b>
             Phantom
           </b>{' '}

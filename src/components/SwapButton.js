@@ -55,7 +55,14 @@ function SwapButtonDialog({ size }) {
             height: '100%',
           }}
         >
-
+          {/*<Swap
+            provider={provider}
+            tokenList={tokenList}
+            containerStyle={{
+              width: '100%',
+              boxShadow: 'none',
+            }}
+          />*/}
           <DialogActions>
             <Button onClick={() => setDialogOpen(false)}>Close</Button>
           </DialogActions>
@@ -96,7 +103,11 @@ function SwapButtonPopover({ size }) {
               disableRestoreFocus
               keepMounted
             >
-
+              {/*<Swap
+                provider={provider}
+                tokenList={tokenList}
+                containerStyle={{ width: '432px' }}
+              />*/}
             </Popover>
           </div>
         )}

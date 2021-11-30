@@ -1,6 +1,6 @@
 {
-  "name": "Sollet",
-  "description": "Solana SPL Token Wallet",
+  "name": "Safelet",
+  "description": "Safecoin SPL Token Wallet",
   "version": "0.3.1",
   "browser_action": {
     "default_popup": "index.html",
