@@ -4,17 +4,17 @@ import {
   SYSVAR_RENT_PUBKEY,
   TransactionInstruction,
 } from '@safecoin/web3.js';
-
+// sol ref : TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA
 export const TOKEN_PROGRAM_ID = new PublicKey(
-  'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+  'ToKLx75MGim1d1jRusuVX8xvdvvbSDESVaNXpRA9PHN',
 );
-
+// sol ref : So11111111111111111111111111111111111111112
 export const WRAPPED_SOL_MINT = new PublicKey(
-  'So11111111111111111111111111111111111111112',
+  'Safe111111111111111111111111111111111111112',
 );
-
+// sol ref : Memo1UhkJRfHyvLMcVucJwxXeuD728EqVDDwQDxFMNo
 export const MEMO_PROGRAM_ID = new PublicKey(
-  'Memo1UhkJRfHyvLMcVucJwxXeuD728EqVDDwQDxFMNo',
+  'MEMDqRW2fYAU19mcFnoDVoqG4Br4t7TdyWjjv38P6Nc',
 );
 
 const LAYOUT = BufferLayout.union(BufferLayout.u8('instruction'));
