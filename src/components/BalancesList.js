@@ -63,6 +63,7 @@ import MergeAccountsDialog from './MergeAccountsDialog';
 import SwapButton from './SwapButton';
 import DnsIcon from '@material-ui/icons/Dns';
 import DomainsList from './DomainsList';
+import WrapUnwrapDialog from './WrapUnwrapDialog';
 
 const balanceFormat = new Intl.NumberFormat(undefined, {
   minimumFractionDigits: 4,
@@ -348,6 +349,15 @@ export default function BalancesList() {
         ))}
         {loaded ? null : <LoadingIndicator />}
       </List>
+      <WrapUnwrapDialog
+        open={showAddTokenDialog}
+        onClose={() => setShowAddTokenDialog(false)}
+      />
+      {/*<FtxPayDialog
+        open={showFtxPayDialog}
+        publicKeys={publicKeys}
+        onClose={() => setShowFtxPayDialog(false)}
+      />*/}
       <AddTokenDialog
         open={showAddTokenDialog}
         onClose={() => setShowAddTokenDialog(false)}
