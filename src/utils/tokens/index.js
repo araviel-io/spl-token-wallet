@@ -257,7 +257,7 @@ export async function findAssociatedTokenAddress(
 }
 
 export const ASSOCIATED_TOKEN_PROGRAM_ID = new PublicKey(
-  'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+  'AToD9iqHSc2fhEP9Jp7UYA6mRjHQ4CTWyzCsw8X3tH7K',
 );
 
 export async function transferTokens({
