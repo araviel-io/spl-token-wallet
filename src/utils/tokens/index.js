@@ -5,7 +5,7 @@ import {
   TransactionInstruction,
   SYSVAR_RENT_PUBKEY,
 } from '@safecoin/web3.js';
-import { TokenInstructions } from '@project-serum/serum';
+import { TokenInstructions } from '@safely-project/serum';
 import {
   assertOwner,
   closeAccount,

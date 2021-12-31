@@ -10,8 +10,8 @@ import {
   NEW_ORDER_OWNER_INDEX,
   NEW_ORDER_V3_OPEN_ORDERS_INDEX,
   NEW_ORDER_V3_OWNER_INDEX,
-} from '@project-serum/serum';
-import { decodeTokenInstruction } from '@project-serum/token';
+} from '@safely-project/serum';
+import { decodeTokenInstruction } from '@safely-project/token';
 import { PublicKey } from '@safecoin/web3.js';
 import { TOKEN_PROGRAM_ID } from './tokens/instructions';
 import { Wallet } from './wallet';

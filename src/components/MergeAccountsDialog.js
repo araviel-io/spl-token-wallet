@@ -10,7 +10,7 @@ import Link from '@material-ui/core/Link';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
-import { TokenInstructions } from '@project-serum/serum';
+import { TokenInstructions } from '@safely-project/serum';
 import { useWalletPublicKeys } from '../utils/wallet';
 import {
   useConnection,

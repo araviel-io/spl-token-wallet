@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import LabelValue from './LabelValue';
 import { useWallet, useWalletPublicKeys } from '../../utils/wallet';
-import { TOKEN_MINTS } from '@project-serum/serum';
+import { TOKEN_MINTS } from '@safely-project/serum';
 
 const TYPE_LABELS = {
   initializeMint: 'Initialize mint',
