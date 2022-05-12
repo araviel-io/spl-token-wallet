@@ -22,7 +22,7 @@ export const CLUSTERS = [
   },
   {
     name: 'testnet',
-    apiUrl: clusterApiUrl('testnet'),
+    apiUrl: 'https://api.testnet.safecoin.org',
     label: 'Testnet',
     clusterSlug: 'testnet',
   },

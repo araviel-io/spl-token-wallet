@@ -58,10 +58,18 @@ import CloseTokenAccountDialog from './CloseTokenAccountButton';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import TokenIcon from './TokenIcon';
 import EditAccountNameDialog from './EditAccountNameDialog';
-import MergeAccountsDialog from './MergeAccountsDialog';
+/*import MergeAccountsDialog from './MergeAccountsDialog';
 import SwapButton from './SwapButton';
 import DnsIcon from '@material-ui/icons/Dns';
-import DomainsList from './DomainsList';
+import DomainsList from './DomainsList';*/
+import { ToggleButton } from '@material-ui/lab';
+import { Metadata } from "@j0nnyboi/mpl-token-metadata";
+import { Connection, PublicKey } from '@safecoin/web3.js'
+
+
+import itemData from './itemData';
+
+const connection = new Connection('https://api.testnet.safecoin.org');
 
 const balanceFormat = new Intl.NumberFormat(undefined, {
   minimumFractionDigits: 4,
@@ -103,15 +111,33 @@ function fairsIsLoaded(publicKeys) {
   );
 }
 
+const useStyless = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    backgroundColor: theme.palette.background.paper,
+  },
+  imageList: {
+    width: 500,
+    height: 450,
+  },
+  icon: {
+    color: 'rgba(255, 255, 255, 0.54)',
+  },
+}));
+
 export default function BalancesList() {
   const wallet = useWallet();
   const [publicKeys, loaded] = useWalletPublicKeys();
   const [showAddTokenDialog, setShowAddTokenDialog] = useState(false);
+  const [showNft, setShowNft] = useState(false);
   const [showEditAccountNameDialog, setShowEditAccountNameDialog] = useState(
     false,
   );
   //const [showMergeAccounts, setShowMergeAccounts] = useState(false);
- // const [showFtxPayDialog, setShowFtxPayDialog] = useState(false);
+  // const [showFtxPayDialog, setShowFtxPayDialog] = useState(false);
   const [sortAccounts, setSortAccounts] = useState(SortAccounts.None);
   //const [showDomains, setShowDomains] = useState(false);
   const { accounts, setAccountName } = useWalletSelector();
@@ -183,19 +209,23 @@ export default function BalancesList() {
   const balanceListItemsMemo = useMemo(() => {
     return sortedPublicKeys.map((pk) => {
       return React.memo((props) => {
-        return (
+        return (<>
           <BalanceListItem
             key={pk.toString()}
             publicKey={pk}
             setUsdValue={setUsdValuesCallback}
           />
+        </>
         );
       });
     });
   }, [sortedPublicKeys, setUsdValuesCallback]);
 
-  const iconSize = isExtensionWidth ? 'small' : 'medium';
 
+  // test()
+  //console.log("sortedPublicKeys ", sortedPublicKeys)
+  const iconSize = isExtensionWidth ? 'small' : 'medium';
+  const classes = useStyless();
   return (
     <Paper>
       <AppBar position="static" color="default" elevation={1}>
@@ -230,10 +260,9 @@ export default function BalancesList() {
                 {selectedAccount && selectedAccount.name}
                 {isExtensionWidth
                   ? ''
-                  : ` (${
-                      selectedAccount &&
-                      shortenAddress(selectedAccount.address.toBase58())
-                    })`}{' '}
+                  : ` (${selectedAccount &&
+                  shortenAddress(selectedAccount.address.toBase58())
+                  })`}{' '}
                 {/*allTokensLoaded && (
                   <>({numberFormat.format(totalUsdValue.toFixed(2))})</>
                 )*/}
@@ -287,6 +316,15 @@ export default function BalancesList() {
             </IconButton>
           </Tooltip>
           */}
+          <ToggleButton
+            value=""
+            selected={showNft}
+            onChange={() => {
+              showNft ? setShowNft(false) : setShowNft(true);
+            }}
+          >
+            <div style={{ fontSize: 'initial', fontWeight: 'bold' }}>NFT</div>
+          </ToggleButton>
           <Tooltip title="Add Token" arrow>
             <IconButton
               size={iconSize}
@@ -333,21 +371,31 @@ export default function BalancesList() {
           </Tooltip>
         </Toolbar>
       </AppBar>
-      <List disablePadding>
-        {balanceListItemsMemo.map((Memoized) => (
-          <Memoized />
-        ))}
-        {loaded ? null : <LoadingIndicator />}
-      </List>
+      {showNft ?
+        <div className={classes.root}>
+          {itemData.map((item) => (
+            <div> {/* container */}
+              <img style={{maxWidth:'280px'}} src={item.img} alt={item.title} />
+              <IconButton aria-label={`info about ${item.title}`} className={classes.icon}>
+                <InfoIcon />
+              </IconButton>
+            </div>
+          ))}
+
+        </div>
+        :
+        <List disablePadding>
+          {balanceListItemsMemo.map((Memoized) => (
+            <Memoized />
+          ))}
+          {loaded ? null : <LoadingIndicator />}
+        </List>
+      }
       <AddTokenDialog
         open={showAddTokenDialog}
         onClose={() => setShowAddTokenDialog(false)}
       />
-      {/*<FtxPayDialog
-        open={showFtxPayDialog}
-        publicKeys={publicKeys}
-        onClose={() => setShowFtxPayDialog(false)}
-      />*/}
+
       <EditAccountNameDialog
         open={showEditAccountNameDialog}
         onClose={() => setShowEditAccountNameDialog(false)}
@@ -462,7 +510,7 @@ export function BalanceListItem({ publicKey, expandable, setUsdValue }) {
     if (
       associatedTokensCache[wallet.publicKey.toString()] === undefined ||
       associatedTokensCache[wallet.publicKey.toString()][mint.toString()] ===
-        undefined
+      undefined
     ) {
       findAssociatedTokenAddress(wallet.publicKey, mint).then((assocTok) => {
         let walletAccounts = Object.assign(
@@ -517,12 +565,29 @@ export function BalanceListItem({ publicKey, expandable, setUsdValue }) {
     price === undefined // Not yet loaded.
       ? undefined
       : price === null // Loaded and empty.
-      ? null
-      : ((amount / Math.pow(10, decimals)) * price).toFixed(2); // Loaded.
+        ? null
+        : ((amount / Math.pow(10, decimals)) * price).toFixed(2); // Loaded.
   if (setUsdValue && usdValue !== undefined) {
     setUsdValue(publicKey, usdValue === null ? null : parseFloat(usdValue));
   }
 
+  //console.log("balanceInfo ", balanceInfo)
+  // console.log("mint ", mint)
+
+  async function loadNfts() {
+    try {
+
+      let mintPubkey = new PublicKey(mint);
+      let tokenmetaPubkey = await Metadata.getPDA(mintPubkey);
+
+      const tokenmeta = await Metadata.load(connection, tokenmetaPubkey);
+      console.log("tokenmeta ", tokenmeta)
+    }
+    catch (e) {
+      console.log(e, "error")
+    }
+  }
+  loadNfts();
   return (
     <>
       <ListItem button onClick={() => expandable && setOpen((open) => !open)}>
@@ -566,7 +631,7 @@ export function BalanceListItem({ publicKey, expandable, setUsdValue }) {
           <BalanceListItemDetails
             isAssociatedToken={isAssociatedToken}
             publicKey={publicKey}
-           // serumMarkets={serumMarkets}
+            // serumMarkets={serumMarkets}
             balanceInfo={balanceInfo}
           />
         </Collapse>
@@ -594,6 +659,7 @@ function BalanceListItemDetails({
   const [showDetails, setShowDetails] = useState(false);
   const wallet = useWallet();
   const isProdNetwork = useIsProdNetwork();
+  console.log("BalanceListItem balanceInfo", balanceInfo)
   /*const [swapInfo] = useAsyncData(async () => {
     if (!showSwapAddress || !isProdNetwork) {
       return null;
@@ -756,8 +822,8 @@ function BalanceListItemDetails({
             Send
           </Button>
           {localStorage.getItem('warning-close-account') &&
-          mint &&
-          amount === 0 ? (
+            mint &&
+            amount === 0 ? (
             <Button
               variant="outlined"
               color="secondary"

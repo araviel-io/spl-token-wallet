@@ -1588,6 +1588,23 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.2.tgz#26520bf09abe4a5644cd5414e37125a8954241dd"
   integrity sha512-tsAQNx32a8CoFhjhijUIhI4kccIAgmGhy8LZMZgGfmXcpMbPRUqn5LWmgRttILi6yeGmBJd2xsPkFMs0PzgPCw==
 
+"@j0nnyboi/mpl-core@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@j0nnyboi/mpl-core/-/mpl-core-0.0.1.tgz#03362f18038b22b56dd265a4ed873c4b5ef5ce02"
+  integrity sha512-Q5KYRaXs9kcl7o3AglkXoLX4HjN69zMg9Eeu0VrH57tb10d7jzr6lKqh/6M47/4P2Nzy0l+aaqAi0rGsnW9GBQ==
+  dependencies:
+    "@safecoin/web3.js" "^1.29.3"
+    bs58 "^4.0.1"
+
+"@j0nnyboi/mpl-token-metadata@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@j0nnyboi/mpl-token-metadata/-/mpl-token-metadata-0.0.1.tgz#29b8dc5b15a42c1dd097c33c7ee096b906194e73"
+  integrity sha512-52c7jY8DgJrzhDDuEP6rYfWn2SmcPHC5W7q+e7lzITMX3ekKYz5WwvjBun2OpjLO2lXoxweBhreYbsYFJ9NtLw==
+  dependencies:
+    "@j0nnyboi/mpl-core" "0.0.1"
+    "@safecoin/safe-token" "^0.1.7-b"
+    "@safecoin/web3.js" "^1.29.3"
+
 "@jest/console@^26.6.2":
   version "26.6.2"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-26.6.2.tgz#4e04bc464014358b03ab4937805ee36a0aeb98f2"
@@ -2038,6 +2055,38 @@
     "@types/estree" "0.0.39"
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
+
+"@safecoin/safe-token@^0.1.7-b":
+  version "0.1.7-b"
+  resolved "https://registry.yarnpkg.com/@safecoin/safe-token/-/safe-token-0.1.7-b.tgz#6cbac5036eb31581c1a1b551f16663fdd898c050"
+  integrity sha512-xIfz5U4rtzjxAdWTjvEcz3YVTCJfVnoBZGHQXw1lUgUMZrhmLJtI17Qu//sGM/Vf3iLkmr46CKGSzcrrKGjT8w==
+  dependencies:
+    "@babel/runtime" "^7.10.5"
+    "@safecoin/web3.js" "^1.21.0"
+    bn.js "^5.1.0"
+    buffer "6.0.3"
+    buffer-layout "^1.2.0"
+    dotenv "10.0.0"
+
+"@safecoin/web3.js@^1.21.0":
+  version "1.29.4"
+  resolved "https://registry.yarnpkg.com/@safecoin/web3.js/-/web3.js-1.29.4.tgz#7593735166e5b3eca81fb10d0db38df280b8e003"
+  integrity sha512-IPU1EL30feLyDw6qDMjKXP9r70KPQI52n1Sh9R9QXD4EjBRQs0DJm7dVqSGjJiMrqvM4p8I6rGMwljtSPdr5vA==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@solana/buffer-layout" "^3.0.0"
+    bn.js "^5.0.0"
+    borsh "^0.4.0"
+    bs58 "^4.0.1"
+    buffer "6.0.1"
+    cross-fetch "^3.1.4"
+    crypto-hash "^1.2.2"
+    jayson "^3.4.4"
+    js-sha3 "^0.8.0"
+    rpc-websockets "^7.4.2"
+    secp256k1 "^4.0.2"
+    superstruct "^0.14.2"
+    tweetnacl "^1.0.0"
 
 "@safecoin/web3.js@^1.29.3":
   version "1.29.3"
