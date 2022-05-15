@@ -13,7 +13,7 @@ import {
 import { findAssociatedTokenAddress } from '../utils/tokens';
 import LoadingIndicator from './LoadingIndicator';
 import Collapse from '@material-ui/core/Collapse';
-import { Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import TokenInfoDialog from './TokenInfoDialog';
 import FtxPayDialog from './FtxPay/FtxPayDialog';
 import Link from '@material-ui/core/Link';
@@ -66,10 +66,32 @@ import { ToggleButton } from '@material-ui/lab';
 import { Metadata } from "@j0nnyboi/mpl-token-metadata";
 import { Connection, PublicKey } from '@safecoin/web3.js'
 
-
-import itemData from './itemData';
+import { inherits } from 'util';
 
 const connection = new Connection('https://api.testnet.safecoin.org');
+
+
+const useNFTStyles = makeStyles((theme) => ({
+  nftContainer: {
+    width: 240,
+    height: 320,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10
+  },
+  nftSubcontainer: {
+    height: '100%',
+    width: '100%',
+    minHeight: 'inherit'
+  },
+  center: {
+    alignItems: 'center'
+  },
+  assetContainer: {
+    height: '100%',
+    width: 286,
+  },
+}));
+
 
 const balanceFormat = new Intl.NumberFormat(undefined, {
   minimumFractionDigits: 4,
@@ -110,23 +132,6 @@ function fairsIsLoaded(publicKeys) {
     publicKeys.length
   );
 }
-
-const useStyless = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    backgroundColor: theme.palette.background.paper,
-  },
-  imageList: {
-    width: 500,
-    height: 450,
-  },
-  icon: {
-    color: 'rgba(255, 255, 255, 0.54)',
-  },
-}));
 
 export default function BalancesList() {
   const wallet = useWallet();
@@ -221,11 +226,37 @@ export default function BalancesList() {
     });
   }, [sortedPublicKeys, setUsdValuesCallback]);
 
-
+  const NFTListItemsMemo = useMemo(() => {
+    return sortedPublicKeys.map((pk) => {
+      return React.memo((props) => {
+        return (<>
+          <NFTListItem
+            key={pk.toString()}
+            publicKey={pk}
+            setUsdValue={setUsdValuesCallback}
+          />
+        </>
+        );
+      });
+    });
+  }, [sortedPublicKeys, setUsdValuesCallback]);
   // test()
   //console.log("sortedPublicKeys ", sortedPublicKeys)
+
+  const useStylesGrid = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1,
+    },
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
+    },
+  }));
+
+  const gridClasses = useStylesGrid();
   const iconSize = isExtensionWidth ? 'small' : 'medium';
-  const classes = useStyless();
+  //const classes = useStyless();
   return (
     <Paper>
       <AppBar position="static" color="default" elevation={1}>
@@ -372,16 +403,23 @@ export default function BalancesList() {
         </Toolbar>
       </AppBar>
       {showNft ?
-        <div className={classes.root}>
-          {itemData.map((item) => (
-            <div> {/* container */}
+        <div className={gridClasses.root}>
+          <Grid direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start" container spacing={0}>
+            {NFTListItemsMemo.map((Memoized) => (
+              <Memoized />
+            ))}
+            {loaded ? null : <LoadingIndicator />}
+            {/*itemData.map((item) => (
+            <div> 
               <img style={{maxWidth:'280px'}} src={item.img} alt={item.title} />
               <IconButton aria-label={`info about ${item.title}`} className={classes.icon}>
                 <InfoIcon />
               </IconButton>
             </div>
-          ))}
-
+          ))*/}
+          </Grid>
         </div>
         :
         <List disablePadding>
@@ -405,11 +443,6 @@ export default function BalancesList() {
           setShowEditAccountNameDialog(false);
         }}
       />
-      {/*
-      <MergeAccountsDialog
-        open={showMergeAccounts}
-        onClose={() => setShowMergeAccounts(false)}
-      />*/}
     </Paper>
   );
 }
@@ -445,6 +478,7 @@ export function BalanceListItem({ publicKey, expandable, setUsdValue }) {
   const [open, setOpen] = useState(false);
   const isExtensionWidth = useIsExtensionWidth();
   const [, setForceUpdate] = useState(false);
+  const [metaState, setMetaState] = useState();
   // Valid states:
   //   * undefined => loading.
   //   * null => not found.
@@ -571,23 +605,6 @@ export function BalanceListItem({ publicKey, expandable, setUsdValue }) {
     setUsdValue(publicKey, usdValue === null ? null : parseFloat(usdValue));
   }
 
-  //console.log("balanceInfo ", balanceInfo)
-  // console.log("mint ", mint)
-
-  async function loadNfts() {
-    try {
-
-      let mintPubkey = new PublicKey(mint);
-      let tokenmetaPubkey = await Metadata.getPDA(mintPubkey);
-
-      const tokenmeta = await Metadata.load(connection, tokenmetaPubkey);
-      console.log("tokenmeta ", tokenmeta)
-    }
-    catch (e) {
-      console.log(e, "error")
-    }
-  }
-  loadNfts();
   return (
     <>
       <ListItem button onClick={() => expandable && setOpen((open) => !open)}>
@@ -639,6 +656,246 @@ export function BalanceListItem({ publicKey, expandable, setUsdValue }) {
     </>
   );
 }
+
+
+export function NFTListItem({ publicKey, expandable, setUsdValue }) {
+  const wallet = useWallet();
+  const balanceInfo = useBalanceInfo(publicKey);
+  const classes = useStyles();
+  const nftStyles = useNFTStyles();
+  const connection = useConnection();
+  const [open, setOpen] = useState(false);
+  const isExtensionWidth = useIsExtensionWidth();
+  const [, setForceUpdate] = useState(false);
+  const [nftUri, setNFTUri] = useState();
+  const [NFTName, setNFTName] = useState();
+  const [NFTCreator, setNFTCreator] = useState();
+  const [NFTImage, setNFTImage] = useState();
+  // Valid states:
+  //   * undefined => loading.
+  //   * null => not found.
+  //   * else => price is loaded.
+  const [price, setPrice] = useState(undefined);
+  useEffect(() => {
+    if (balanceInfo) {
+      if (balanceInfo.tokenSymbol) {
+        const coin = balanceInfo.tokenSymbol.toUpperCase();
+        // Don't fetch USD stable coins. Mark to 1 USD.
+        if (coin === 'USDT' || coin === 'USDC') {
+          setPrice(1);
+        }
+        else {
+          setPrice(null);
+        }
+      }
+      // No token symbol so don't fetch market data.
+      else {
+        setPrice(null);
+      }
+    }
+  }, [price, balanceInfo, connection]);
+
+  useEffect(() => {
+    // declare the async data fetching function
+    const storeNFTS = async () => {
+      const a = await loadNfts();
+      if (a === undefined) {
+
+      } else {
+        setNFTUri(a['data']['data'].uri)
+
+        if (a['data']['data'].uri === '' || a['data']['data'].uri === undefined) {
+
+        } else {
+
+          try {
+            // ⛔️ TypeError: Failed to fetch
+            // 👇️ incorrect or incomplete URL
+            // this part is only for retrieving arweave image 'from' nft metadata
+            const response = await fetch(a['data']['data'].uri, { cache: 'reload' });
+            const data = await response.json();
+            if (!response.ok) {
+              throw new Error(`Error! status: ${response.status}`);
+            }
+            setNFTImage(data.image)
+            console.log("data", data.image);
+            const result = await response.json();
+            return result;
+          } catch (err) {
+            console.log("Arweave not responding", err);
+          }
+
+        }
+        loadNftImageFromSafestore(a['data']['data'].uri);
+        // console.log("allo uri ? ", a['data']['data'].uri)
+      }
+
+      // return a;
+    };
+    storeNFTS();
+
+  }, [])
+
+  expandable = expandable === undefined ? true : expandable;
+
+  if (!balanceInfo) {
+    return <LoadingIndicator delay={0} />;
+  }
+
+  let {
+    amount,
+    decimals,
+    mint,
+    tokenName,
+    tokenSymbol,
+    tokenLogoUri,
+  } = balanceInfo;
+  tokenName = tokenName ?? abbreviateAddress(mint);
+  let displayName;
+  if (isExtensionWidth) {
+    displayName = tokenSymbol ?? tokenName;
+  } else {
+    displayName = tokenName + (tokenSymbol ? ` (${tokenSymbol})` : '');
+  }
+
+  // Fetch and cache the associated token address.
+  if (wallet && wallet.publicKey && mint) {
+    if (
+      associatedTokensCache[wallet.publicKey.toString()] === undefined ||
+      associatedTokensCache[wallet.publicKey.toString()][mint.toString()] ===
+      undefined
+    ) {
+      findAssociatedTokenAddress(wallet.publicKey, mint).then((assocTok) => {
+        let walletAccounts = Object.assign(
+          {},
+          associatedTokensCache[wallet.publicKey.toString()],
+        );
+        walletAccounts[mint.toString()] = assocTok;
+        associatedTokensCache[wallet.publicKey.toString()] = walletAccounts;
+        if (assocTok.equals(publicKey)) {
+          // Force a rerender now that we've cached the value.
+          setForceUpdate((forceUpdate) => !forceUpdate);
+        }
+      });
+    }
+  }
+
+  // undefined => not loaded.
+  let isAssociatedToken = mint ? undefined : false;
+  if (
+    wallet &&
+    wallet.publicKey &&
+    mint &&
+    associatedTokensCache[wallet.publicKey.toString()]
+  ) {
+    let acc =
+      associatedTokensCache[wallet.publicKey.toString()][mint.toString()];
+    if (acc) {
+      if (acc.equals(publicKey)) {
+        isAssociatedToken = true;
+      } else {
+        isAssociatedToken = false;
+      }
+    }
+  }
+
+  const subtitle =
+    isExtensionWidth || !publicKey.equals(balanceInfo.owner) ? undefined : (
+      <div style={{ display: 'flex', height: '20px', overflow: 'hidden' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'column',
+          }}
+        >
+          {publicKey.toBase58()}
+        </div>
+      </div>
+    );
+
+  const usdValue =
+    price === undefined // Not yet loaded.
+      ? undefined
+      : price === null // Loaded and empty.
+        ? null
+        : ((amount / Math.pow(10, decimals)) * price).toFixed(2); // Loaded.
+  if (setUsdValue && usdValue !== undefined) {
+    setUsdValue(publicKey, usdValue === null ? null : parseFloat(usdValue));
+  }
+
+  async function loadNfts() {
+    try {
+
+      let mintPubkey = new PublicKey(mint);
+      let tokenmetaPubkey = await Metadata.getPDA(mintPubkey);
+      const tokenmeta = await Metadata.load(connection, tokenmetaPubkey);
+      let dataArr = Array.from(tokenmeta);
+      //console.log("tokenmetatokenmeta ", tokenmeta)
+      const obj = JSON.parse(tokenmeta);
+      return obj;
+    }
+    catch (e) {
+      //console.log(e, "error")
+    }
+
+  }
+
+  async function loadNftImageFromSafestore() {
+    var txtFile = new XMLHttpRequest();
+    txtFile.open("GET", "http://safestore.testnet.darkartlabs.tech:1984/lBCNu9s7pgMq5Ha-wi6R1Nd7UR563aBzMTpGvfykAPQ", true);
+    txtFile.onreadystatechange = function () {
+      const allText = txtFile.responseText;
+      console.log("allTextallText ", allText)
+      if (txtFile.readyState === 4) {  
+        if (txtFile.status === 200) {  
+
+          //lines = txtFile.responseText.split("\n"); // Will separate each line into an array
+        }
+      }
+    }
+
+  }
+
+  const samplePicture = 'https://images-cdn.exchange.art/M8tkdnS5FAGJ2AIIORA3gZz6K5_VO667417VlBXQW-M?ext=jpg?ext=jpg&quality=100&width=350&dpr=2'
+  return (
+    <>
+      <Grid item xl>
+
+        <div className={nftStyles.nftContainer}>
+          <div className={nftStyles.nftSubcontainer}>
+            <div className={nftStyles.center}>
+              <div className={nftStyles.assetContainer}>
+                <img src={samplePicture} style={{
+                  objecFit: 'cover',
+                  width: '100%',
+                  height: '100%',
+                  maxWidth: '100%',
+                  maxheight: '100%',
+                  borderRadius: 0,
+                }}></img>
+              </div>
+            </div>
+            <div>Ngfdg</div>
+          </div>
+          <img src={NFTImage}></img>
+        </div>
+
+        {expandable && (
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <BalanceListItemDetails
+              isAssociatedToken={isAssociatedToken}
+              publicKey={publicKey}
+              // serumMarkets={serumMarkets}
+              balanceInfo={balanceInfo}
+            />
+          </Collapse>
+        )}
+      </Grid>
+    </>
+  );
+}
+
 
 function BalanceListItemDetails({
   publicKey,
