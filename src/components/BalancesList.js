@@ -65,30 +65,37 @@ import DomainsList from './DomainsList';*/
 import { ToggleButton } from '@material-ui/lab';
 import { Metadata } from "@j0nnyboi/mpl-token-metadata";
 import { Connection, PublicKey } from '@safecoin/web3.js'
-
+import gradientAvatar from 'gradient-avatar';
 import { inherits } from 'util';
+import InlineSVG from 'svg-inline-react';
 
-const connection = new Connection('https://api.testnet.safecoin.org');
+
 
 
 const useNFTStyles = makeStyles((theme) => ({
   nftContainer: {
-    width: 240,
-    height: 320,
+    border: '1px solid #ededed',
+    width: 210,
+    height: 280,
     borderTopLeftRadius: 10,
-    borderTopRightRadius: 10
+    borderTopRightRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    marginTop: 12
   },
   nftSubcontainer: {
     height: '100%',
     width: '100%',
-    minHeight: 'inherit'
+    minHeight: 'inherit',
+    display: 'flex',
+    flexFlow: 'column'
   },
   center: {
     alignItems: 'center'
   },
   assetContainer: {
     height: '100%',
-    width: 286,
+    width: 208,
   },
 }));
 
@@ -404,8 +411,8 @@ export default function BalancesList() {
       </AppBar>
       {showNft ?
         <div className={gridClasses.root}>
-          <Grid direction="row"
-            justifyContent="flex-start"
+          <Grid style={{ justifyContent: 'space-around' }} direction="row"
+            justifyContent="space-evenly"
             alignItems="flex-start" container spacing={0}>
             {NFTListItemsMemo.map((Memoized) => (
               <Memoized />
@@ -657,7 +664,9 @@ export function BalanceListItem({ publicKey, expandable, setUsdValue }) {
   );
 }
 
-
+// TODO: loader when loading nfts meta & media
+//        if 404 pic let loader runs
+// filter duplicates
 export function NFTListItem({ publicKey, expandable, setUsdValue }) {
   const wallet = useWallet();
   const balanceInfo = useBalanceInfo(publicKey);
@@ -668,8 +677,8 @@ export function NFTListItem({ publicKey, expandable, setUsdValue }) {
   const isExtensionWidth = useIsExtensionWidth();
   const [, setForceUpdate] = useState(false);
   const [nftUri, setNFTUri] = useState();
-  const [NFTName, setNFTName] = useState();
-  const [NFTCreator, setNFTCreator] = useState();
+  const [NFTName, setNFTName] = useState('Name');
+  const [NFTCreator, setNFTCreators] = useState('empty');
   const [NFTImage, setNFTImage] = useState();
   // Valid states:
   //   * undefined => loading.
@@ -698,13 +707,16 @@ export function NFTListItem({ publicKey, expandable, setUsdValue }) {
   useEffect(() => {
     // declare the async data fetching function
     const storeNFTS = async () => {
-      const a = await loadNfts();
-      if (a === undefined) {
-
+      const META = await loadNfts();
+      console.log("NFT META", META)
+      if (META === undefined) {
       } else {
-        setNFTUri(a['data']['data'].uri)
+        setNFTUri(META['data']['data'].uri)
+        setNFTName(META['data']['data'].name)
+        //setNFTCreators(META['data']['data']['creators'][0])
+        //setNFTCreators()
 
-        if (a['data']['data'].uri === '' || a['data']['data'].uri === undefined) {
+        if (META['data']['data'].uri === '' || META['data']['data'].uri === undefined) {
 
         } else {
 
@@ -712,7 +724,7 @@ export function NFTListItem({ publicKey, expandable, setUsdValue }) {
             // ⛔️ TypeError: Failed to fetch
             // 👇️ incorrect or incomplete URL
             // this part is only for retrieving arweave image 'from' nft metadata
-            const response = await fetch(a['data']['data'].uri, { cache: 'reload' });
+            const response = await fetch(META['data']['data'].uri, { cache: 'reload' });
             const data = await response.json();
             if (!response.ok) {
               throw new Error(`Error! status: ${response.status}`);
@@ -726,7 +738,7 @@ export function NFTListItem({ publicKey, expandable, setUsdValue }) {
           }
 
         }
-        loadNftImageFromSafestore(a['data']['data'].uri);
+        loadNftImageFromSafestore(META['data']['data'].uri);
         // console.log("allo uri ? ", a['data']['data'].uri)
       }
 
@@ -829,14 +841,15 @@ export function NFTListItem({ publicKey, expandable, setUsdValue }) {
 
       let mintPubkey = new PublicKey(mint);
       let tokenmetaPubkey = await Metadata.getPDA(mintPubkey);
+      console.log("tokenmetaPubkey ", tokenmetaPubkey.toBase58())
       const tokenmeta = await Metadata.load(connection, tokenmetaPubkey);
       let dataArr = Array.from(tokenmeta);
-      //console.log("tokenmetatokenmeta ", tokenmeta)
+      console.log("tokenmetatokenmeta ", tokenmeta)
       const obj = JSON.parse(tokenmeta);
       return obj;
     }
     catch (e) {
-      //console.log(e, "error")
+      console.log(e, "error")
     }
 
   }
@@ -847,8 +860,8 @@ export function NFTListItem({ publicKey, expandable, setUsdValue }) {
     txtFile.onreadystatechange = function () {
       const allText = txtFile.responseText;
       console.log("allTextallText ", allText)
-      if (txtFile.readyState === 4) {  
-        if (txtFile.status === 200) {  
+      if (txtFile.readyState === 4) {
+        if (txtFile.status === 200) {
 
           //lines = txtFile.responseText.split("\n"); // Will separate each line into an array
         }
@@ -856,42 +869,56 @@ export function NFTListItem({ publicKey, expandable, setUsdValue }) {
     }
 
   }
+  function generateAvatar() {
+    let a = gradientAvatar(NFTCreator.toString(), 28)
+    //console.log("avatar : ", a)
+    return (<InlineSVG src={a} />)
 
+  }
+
+  //console.log("CREATOR ", NFTCreator)
   const samplePicture = 'https://images-cdn.exchange.art/M8tkdnS5FAGJ2AIIORA3gZz6K5_VO667417VlBXQW-M?ext=jpg?ext=jpg&quality=100&width=350&dpr=2'
   return (
     <>
-      <Grid item xl>
-
-        <div className={nftStyles.nftContainer}>
-          <div className={nftStyles.nftSubcontainer}>
-            <div className={nftStyles.center}>
-              <div className={nftStyles.assetContainer}>
-                <img src={samplePicture} style={{
-                  objecFit: 'cover',
-                  width: '100%',
-                  height: '100%',
-                  maxWidth: '100%',
-                  maxheight: '100%',
-                  borderRadius: 0,
-                }}></img>
-              </div>
+      <div className={nftStyles.nftContainer}>
+        <div className={nftStyles.nftSubcontainer}>
+          <div className={nftStyles.center}>
+            <div className={nftStyles.assetContainer}>
+              <img src={samplePicture} style={{
+                objecFit: 'cover',
+                width: '100%',
+                height: '100%',
+                maxWidth: '100%',
+                maxheight: '100%',
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10
+              }}></img>
             </div>
-            <div>Ngfdg</div>
-          </div>
-          <img src={NFTImage}></img>
-        </div>
 
-        {expandable && (
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <BalanceListItemDetails
-              isAssociatedToken={isAssociatedToken}
-              publicKey={publicKey}
-              // serumMarkets={serumMarkets}
-              balanceInfo={balanceInfo}
-            />
-          </Collapse>
-        )}
-      </Grid>
+          </div>
+          <div style={{padding:5}}>
+            <div>{NFTName}</div>
+            <div style={{ display: 'flex' }}>
+              <div>{generateAvatar()}</div>
+              <div>by {NFTCreator}</div>
+              <div>verfied</div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+      {expandable && (
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <BalanceListItemDetails
+            isAssociatedToken={isAssociatedToken}
+            publicKey={publicKey}
+            // serumMarkets={serumMarkets}
+            balanceInfo={balanceInfo}
+          />
+        </Collapse>
+      )}
+
     </>
   );
 }
