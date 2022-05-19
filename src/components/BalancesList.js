@@ -63,14 +63,17 @@ import SwapButton from './SwapButton';
 import DnsIcon from '@material-ui/icons/Dns';
 import DomainsList from './DomainsList';*/
 import { ToggleButton } from '@material-ui/lab';
-import { Metadata } from "@j0nnyboi/mpl-token-metadata";
+//import { Metadata } from "@j0nnyboi/mpl-token-metadata";
+import { Metadata } from '@leda-mint-io/lpl-token-metadata/dist/deprecated';
 import { Connection, PublicKey } from '@safecoin/web3.js'
 import gradientAvatar from 'gradient-avatar';
 import { inherits } from 'util';
 import InlineSVG from 'svg-inline-react';
-
-
-
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
 
 const useNFTStyles = makeStyles((theme) => ({
   nftContainer: {
@@ -94,9 +97,36 @@ const useNFTStyles = makeStyles((theme) => ({
     alignItems: 'center'
   },
   assetContainer: {
-    height: '100%',
+    height: 214,
     width: 208,
   },
+  noImageLoader: {
+    width: 208,
+    height: 214,
+    maxWidth: '100%',
+    maxHeight: '100%',
+    animationDuration: '2s',
+    animationFillMode: 'forwards',
+    animationIterationCount: 'infinite',
+    animationName: 'placeHolderShimmer',
+    animationTimingFunction: 'linear',
+    backgroundColor: '#f6f7f8',
+    background: 'linear-gradient(to right, #eeeeee 8%, #bbbbbb 18%, #eeeeee 33%)',
+    backgroundSize: '800px 104px',
+    position: 'relative'
+  },
+  Asset: {
+    objecFit: 'cover',
+    width: '100%',
+    height: '100%',
+    maxWidth: '100%',
+    maxheight: '100%',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    // backgroundImage: 'url(https://cdn1.iconfinder.com/data/icons/business-company-1/500/image-512.png)',
+    backgroundPosition: 'center',
+    backgroundSize: 'cover'
+  }
 }));
 
 
@@ -676,6 +706,9 @@ export function NFTListItem({ publicKey, expandable, setUsdValue }) {
   const [open, setOpen] = useState(false);
   const isExtensionWidth = useIsExtensionWidth();
   const [, setForceUpdate] = useState(false);
+  const [IsNFTBroken, setIsNFTBroken] = useState(false);
+  const [NFTMetaLoaded, setNFTMetaLoaded] = useState(false);
+  const [IsNFTImageError, setIsNFTImageError] = useState(false);
   const [nftUri, setNFTUri] = useState();
   const [NFTName, setNFTName] = useState('Name');
   const [NFTCreator, setNFTCreators] = useState('empty');
@@ -710,10 +743,13 @@ export function NFTListItem({ publicKey, expandable, setUsdValue }) {
       const META = await loadNfts();
       console.log("NFT META", META)
       if (META === undefined) {
+        // maybe unminted, need to find out why some of nft don't have meta
+        setIsNFTBroken(true)
       } else {
+        setNFTMetaLoaded(true)
         setNFTUri(META['data']['data'].uri)
         setNFTName(META['data']['data'].name)
-        //setNFTCreators(META['data']['data']['creators'][0])
+        setNFTCreators(META['data']['data']['creators'][0].address)
         //setNFTCreators()
 
         if (META['data']['data'].uri === '' || META['data']['data'].uri === undefined) {
@@ -734,7 +770,9 @@ export function NFTListItem({ publicKey, expandable, setUsdValue }) {
             const result = await response.json();
             return result;
           } catch (err) {
-            console.log("Arweave not responding", err);
+            //console.log("Arweave not responding", err);
+            // means that meta data is here but the uri fetched from safestore / arweave returns 404 or missing asset
+            setIsNFTImageError(true);
           }
 
         }
@@ -841,15 +879,15 @@ export function NFTListItem({ publicKey, expandable, setUsdValue }) {
 
       let mintPubkey = new PublicKey(mint);
       let tokenmetaPubkey = await Metadata.getPDA(mintPubkey);
-      console.log("tokenmetaPubkey ", tokenmetaPubkey.toBase58())
+      //console.log("tokenmetaPubkey ", tokenmetaPubkey.toBase58())
       const tokenmeta = await Metadata.load(connection, tokenmetaPubkey);
       let dataArr = Array.from(tokenmeta);
-      console.log("tokenmetatokenmeta ", tokenmeta)
+      //console.log("tokenmetatokenmeta ", tokenmeta)
       const obj = JSON.parse(tokenmeta);
       return obj;
     }
     catch (e) {
-      console.log(e, "error")
+      //console.log(e, "error")
     }
 
   }
@@ -867,48 +905,55 @@ export function NFTListItem({ publicKey, expandable, setUsdValue }) {
         }
       }
     }
-
   }
+  
   function generateAvatar() {
     let a = gradientAvatar(NFTCreator.toString(), 28)
     //console.log("avatar : ", a)
     return (<InlineSVG src={a} />)
 
   }
-
+  function abbreviateAddressString(address) {
+    return address.slice(0, 4) + '…' + address.slice(address.length - 4);
+  }
+  //console.log("IsNFTImageError ", IsNFTImageError)
   //console.log("CREATOR ", NFTCreator)
-  const samplePicture = 'https://images-cdn.exchange.art/M8tkdnS5FAGJ2AIIORA3gZz6K5_VO667417VlBXQW-M?ext=jpg?ext=jpg&quality=100&width=350&dpr=2'
   return (
     <>
-      <div className={nftStyles.nftContainer}>
-        <div className={nftStyles.nftSubcontainer}>
+      <div button onClick={() => expandable && setOpen((open) => !open)} className={nftStyles.nftContainer} style={IsNFTBroken ? { display: 'none' } : {}}>
+        <div className={nftStyles.nftSubcontainer} style={!NFTMetaLoaded ? { opacity: '0.2' } : {}}>
           <div className={nftStyles.center}>
             <div className={nftStyles.assetContainer}>
-              <img src={samplePicture} style={{
-                objecFit: 'cover',
-                width: '100%',
-                height: '100%',
-                maxWidth: '100%',
-                maxheight: '100%',
-                borderTopLeftRadius: 10,
-                borderTopRightRadius: 10
-              }}></img>
-            </div>
+              {!NFTImage != '' ?
+                <div className={nftStyles.Asset} >
+                  <div style={{
+                    position: 'relative',
+                    top: '40%',
+                    textAlign: 'center',
+                    opacity: 0.3
+                  }}>
+                    <CircularProgress disableShrink />
+                  </div>
+                </div>
+                :
+                <div className={nftStyles.Asset} style={{ backgroundImage: 'url(' + NFTImage + ')' }}>
 
+                </div>
+              }
+
+            </div>
           </div>
-          <div style={{padding:5}}>
+          <div style={{ padding: 5 }}>
             <div>{NFTName}</div>
-            <div style={{ display: 'flex' }}>
-              <div>{generateAvatar()}</div>
-              <div>by {NFTCreator}</div>
-              <div>verfied</div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div style={{ clipPath: 'circle(11px at center)' }}>{generateAvatar()}</div>
+              <div>by {abbreviateAddressString(NFTCreator)}</div>
+              <div><CheckCircleIcon /></div>
             </div>
           </div>
-
-
         </div>
       </div>
-      {expandable && (
+      {/*expandable && (
         <Collapse in={open} timeout="auto" unmountOnExit>
           <BalanceListItemDetails
             isAssociatedToken={isAssociatedToken}
@@ -917,8 +962,30 @@ export function NFTListItem({ publicKey, expandable, setUsdValue }) {
             balanceInfo={balanceInfo}
           />
         </Collapse>
-      )}
-
+      )*/}
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={open}
+        //onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <div className={classes.paper}>
+            <BalanceListItemDetails
+              isAssociatedToken={isAssociatedToken}
+              publicKey={publicKey}
+              // serumMarkets={serumMarkets}
+              balanceInfo={balanceInfo}
+            />
+          </div>
+        </Fade>
+      </Modal>
     </>
   );
 }
