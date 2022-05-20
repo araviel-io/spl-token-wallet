@@ -126,7 +126,18 @@ const useNFTStyles = makeStyles((theme) => ({
     // backgroundImage: 'url(https://cdn1.iconfinder.com/data/icons/business-company-1/500/image-512.png)',
     backgroundPosition: 'center',
     backgroundSize: 'cover'
-  }
+  },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
 }));
 
 
@@ -906,7 +917,7 @@ export function NFTListItem({ publicKey, expandable, setUsdValue }) {
       }
     }
   }
-  
+
   function generateAvatar() {
     let a = gradientAvatar(NFTCreator.toString(), 28)
     //console.log("avatar : ", a)
@@ -948,7 +959,7 @@ export function NFTListItem({ publicKey, expandable, setUsdValue }) {
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <div style={{ clipPath: 'circle(11px at center)' }}>{generateAvatar()}</div>
               <div>by {abbreviateAddressString(NFTCreator)}</div>
-              <div><CheckCircleIcon /></div>
+              <div style={{marginLeft:'8px'}}><CheckCircleIcon color="primary" fontSize="small" /></div>
             </div>
           </div>
         </div>
@@ -964,9 +975,10 @@ export function NFTListItem({ publicKey, expandable, setUsdValue }) {
         </Collapse>
       )*/}
       <Modal
+      onClick={() => expandable && setOpen((open) => !open)}
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={classes.modal}
+        className={nftStyles.modal}
         open={open}
         //onClose={handleClose}
         closeAfterTransition
@@ -976,7 +988,10 @@ export function NFTListItem({ publicKey, expandable, setUsdValue }) {
         }}
       >
         <Fade in={open}>
-          <div className={classes.paper}>
+          <div className={nftStyles.paper}>
+            {/* TODO: NftListItemDetails
+            full picture, share, royaltees creators, explorer etc
+            */}
             <BalanceListItemDetails
               isAssociatedToken={isAssociatedToken}
               publicKey={publicKey}
